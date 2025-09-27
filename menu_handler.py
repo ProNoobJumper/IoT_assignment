@@ -33,12 +33,13 @@ class MenuHandler:
         print("║                                      ║")
         print("║   1. Add Device                      ║")
         print("║   2. List All Devices                ║")
-        print("║   3. Get Device Status               ║")
-        print("║   4. Control Device                  ║")
-        print("║   5. Create Device Schedule          ║")
-        print("║   6. Manage Device Schedule          ║")
-        print("║   7. View All Schedules              ║")
-        print("║   8. Exit                            ║")
+        print("║   3. Delete Device                   ║") # NEW OPTION
+        print("║   4. Get Device Status               ║") # Shifted from 3
+        print("║   5. Control Device                  ║") # Shifted from 4
+        print("║   6. Create Device Schedule          ║") # Shifted from 5
+        print("║   7. Manage Device Schedule          ║") # Shifted from 6
+        print("║   8. View All Schedules              ║") # Shifted from 7
+        print("║   9. Exit                            ║") # Shifted from 8
         print("║                                      ║")
         print("╚══════════════════════════════════════╝")
 
@@ -89,6 +90,18 @@ class MenuHandler:
         except ValueError:
             print("Invalid input. Please enter a number.")
             return None
+
+    def handle_remove_device(self):
+        device = self.select_device()
+        if not device:
+            return
+
+        choice = input(f"Are you sure you want to delete {device.name}? (y/n): ")
+        if choice.lower() == 'y':
+            if self.system.remove_device(device.name):
+                print(f"🗑️ {device.name} has been successfully deleted and all associated schedules have been cleared!")
+            else:
+                print(f"❌ Error: Could not delete {device.name}.")
 
     def handle_device_status(self):
         device = self.select_device()
@@ -153,23 +166,25 @@ class MenuHandler:
     def run(self):
         while True:
             self.display_main_menu()
-            choice = input("Please choose an option (1-8): ")
+            choice = input("Please choose an option (1-9): ") # Updated range to 1-9
 
             if choice == "1":
                 self.handle_add_device()
             elif choice == "2":
                 self.handle_list_devices()
-            elif choice == "3":
+            elif choice == "3": # NEW: Delete Device
+                self.handle_remove_device()
+            elif choice == "4": # SHIFTED: Get Device Status
                 self.handle_device_status()
-            elif choice == "4":
+            elif choice == "5": # SHIFTED: Control Device
                 self.handle_control_device()
-            elif choice == "5":
+            elif choice == "6": # SHIFTED: Create Schedule
                 self.handle_create_schedule()
-            elif choice == "6":
+            elif choice == "7": # SHIFTED: Manage Schedule
                 self.handle_manage_schedule()
-            elif choice == "7":
+            elif choice == "8": # SHIFTED: View Schedules
                 self.handle_view_schedules()
-            elif choice == "8":
+            elif choice == "9": # SHIFTED: Exit
                 print("👋 Goodbye!")
                 break
             else:

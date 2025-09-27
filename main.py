@@ -10,6 +10,13 @@ class SmartHomeSystem:
     def add_device(self, device):
         self.devices[device.name] = device
 
+    def remove_device(self, device_name):
+        if device_name in self.devices:
+            del self.devices[device_name]
+            self.clear_schedule(device_name)  # Also remove associated schedules
+            return True
+        return False
+
     def get_device(self, device_name):
         return self.devices.get(device_name)
 
